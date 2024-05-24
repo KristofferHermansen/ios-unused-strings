@@ -21,7 +21,9 @@ func start(stringsDirectory: String, rootDirectories: [String]) -> [String] {
     dispatchGroup.enter()
     globalQueue.async {
         let stringsContent = finder.contentsOfFile(stringsFile)
-        let unusedIdentifiers = parser.extractStringIdentifiersFrom(stringsContent).filter { identifier in
+        let identifiers = parser.extractStringIdentifiersFrom(stringsContent)
+        print("⚪️ Found a total of \(identifiers.count) keys")
+        let unusedIdentifiers = identifiers.filter { identifier in
             let string = formatter.formatSwiftgenLocalizeString(key: identifier).lowercased()
             return !sourceCode.contains(string)
         }

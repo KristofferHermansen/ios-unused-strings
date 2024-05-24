@@ -3,18 +3,18 @@
 
 ## How it works
 1. It finds all string keys in `.strings` files
-2. Converts the keys into Localize generated format: `"homeScreen.FULL.15.main_title.` => `HomeScreen.Full._15.mainTitle`
+2. Converts the keys into Localize generated format: `"generic_password.` => `L10n.Generic.password`
 3. Searches through the source code and finds which keys are not used
 
 ## Usage
-1. Open the project and build
-2. Find `UnusedKeys` executable file in Products folder in the Project Navigator in XCode
-3. Drag and drop to your terminal
-4. Pass a directory which contains your `.strings` file as the first command line argument
-5. Pass directories where you want to search in.
-6. Press enter. Magic 🪄
+1. Open the project
+2. Add signing in project settings
+3. Edit Scheme and add 2 arguments
+    1. Path to Resources folder containing the Localizable.strings file, fx: `/Users/{user}/Git/{project}/{target}/Resources`
+    2. Path to the folder the program should look for string uses fx: `/Users/{user}/Git/{project}`
+4. Run the program and wait for the the complete list of unused strings to be printed
 
-Example: `/Users/username/Library/Developer/Xcode/DerivedData/UnusedKeys-abc/Build/Products/Debug/UnusedKeys /Users/username/Projects/AwesomeProject/Resources /Users/username/Projects/AwesomeProject/`
+## Disclaimer 🚧
+**This script is not guaranteed to process perfectly.**
 
-## Disclaimer
-This script is not guaranteed to process perfectly
+**This script does not currently support the stringsdict file for plurals**
