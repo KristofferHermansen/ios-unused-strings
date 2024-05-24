@@ -11,8 +11,8 @@ let formatter = Formatter()
 
 func start(stringsDirectory: String, rootDirectories: [String]) -> [String] {
     var result: [String] = []
-    let sourceCode = finder.mergeAllSourceCodeIn(rootDirectories, extensions: ["swift"])
-    let stringsFiles = finder.findFilesIn([stringsDirectory], withExtensions: ["strings"], filter: "en.")
+    let sourceCode = finder.mergeAllSourceCodeIn(rootDirectories, extensions: ["swift"]).lowercased()
+    let stringsFiles = finder.findFilesIn([stringsDirectory], withExtensions: ["strings"], filter: "da.")
 
     guard let stringsFile = stringsFiles.first else {
         return result
@@ -22,7 +22,7 @@ func start(stringsDirectory: String, rootDirectories: [String]) -> [String] {
     globalQueue.async {
         let stringsContent = finder.contentsOfFile(stringsFile)
         let unusedIdentifiers = parser.extractStringIdentifiersFrom(stringsContent).filter { identifier in
-            let string = formatter.formatSwiftgenLocalizeString(key: identifier)
+            let string = formatter.formatSwiftgenLocalizeString(key: identifier).lowercased()
             return !sourceCode.contains(string)
         }
 
@@ -50,8 +50,8 @@ if CommandLine.arguments.count > 2 {
     let date = Date()
     print("⚪️ Starting")
     let keys = start(stringsDirectory: stringsDirectory, rootDirectories: rootDirectories)
-    print("⚪️ Unused strings were detected: \(keys.count)")
     keys.sorted().forEach { print($0) }
+    print("⚪️ Unused strings were detected: \(keys.count)")
     print("🟢 Finished in \(Int(-date.timeIntervalSinceNow)) sec")
 } else {
     print("🔴 Please provide a strings directory and directories for source code files as command line arguments. Aborting")
